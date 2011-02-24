@@ -1,7 +1,6 @@
 package com.ludicast.foursquare.business
 {
 	import com.adobe.serialization.json.JSON;
-	import com.ludicast.foursquare.events.FoursquareResultEvent;
 	import com.ludicast.foursquare.models.*;
 	import com.org.benrimbey.factory.VOInstantiator;
 	
@@ -10,7 +9,6 @@ package com.ludicast.foursquare.business
 	import flash.net.URLRequest;
 	
 	import mx.rpc.IResponder;
-	import mx.rpc.events.HeaderEvent;
 	import mx.rpc.events.ResultEvent;
 	
 	public class AuthenticatedDelegate {
@@ -42,9 +40,7 @@ package com.ludicast.foursquare.business
 		public function getCategories(success:Function):void {
 			load("venues/categories", function(event:Event):void {
 				var categories:Array = jsonResponse(event).categories;
-				success(new FoursquareResultEvent(
-					instantiate(categories, Category)
-				));
+				sendResult(success,instantiate(categories, Category));
 			});			
 		}
 		
@@ -53,6 +49,10 @@ package com.ludicast.foursquare.business
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, parseFunc);
 			loader.load(url);
+		}
+		
+		private function sendResult(success:Function, result:*):void {
+			success(new ResultEvent(ResultEvent.RESULT,false,true,result));			
 		}
 		
 		
@@ -73,7 +73,7 @@ package com.ludicast.foursquare.business
 						);
 					}
 				}
-				success(new FoursquareResultEvent(venue));
+				sendResult(success,venue);
 			});
 		}	
 	}
