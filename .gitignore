@@ -1,0 +1,10 @@
+.DS_Store
+.actionScriptProperties
+.flexProperties
+.project
+.settings/*
+bin-debug/*
+bin/
+libs/
+.FlexUnitSettings/
+encrypted
