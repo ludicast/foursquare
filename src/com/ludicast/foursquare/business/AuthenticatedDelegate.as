@@ -59,22 +59,28 @@ package com.ludicast.foursquare.business
 		private function jsonResponse(event:Event):* {
 			return JSON.decode(event.target.data, false).response;
 		}
+
 		
 		public function getVenueInfo(venueId:String, success:Function):void {
 			load("venues/" + venueId, function(event:Event):void {
 				var venueObj:* = jsonResponse(event).venue;
-				var venue:Venue = VOInstantiator.mapToFlexObjects(venueObj, Venue) as Venue;
-				venue.currentCheckins = new Vector.<Checkin>();
-				for (var i:Number = 0; i < venueObj.hereNow.groups.length; i++) {
-					var tmpCheckins:Array = venueObj.hereNow.groups[i].items;
-					for each (var checkin:* in tmpCheckins) {
-						venue.currentCheckins.push(
-							VOInstantiator.mapToFlexObjects(checkin, Checkin)
-						);
-					}
-				}
+				var venue:Venue = buildVenue(venueObj); 
 				sendResult(success,venue);
 			});
 		}	
+		
+		private function buildVenue(venueObj:*):Venue {
+			var venue:Venue = VOInstantiator.mapToFlexObjects(venueObj, Venue) as Venue;
+			venue.currentCheckins = new Vector.<Checkin>();
+			for (var i:Number = 0; i < venueObj.hereNow.groups.length; i++) {
+				var tmpCheckins:Array = venueObj.hereNow.groups[i].items;
+				for each (var checkin:* in tmpCheckins) {
+					venue.currentCheckins.push(
+						VOInstantiator.mapToFlexObjects(checkin, Checkin)
+					);
+				}
+			}
+			return venue;
+		}
 	}
 }
