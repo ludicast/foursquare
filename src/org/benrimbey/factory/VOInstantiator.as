@@ -1,4 +1,4 @@
-package com.org.benrimbey.factory {
+package org.benrimbey.factory {
 	import com.adobe.serialization.json.JSON;
 	
 	import flash.utils.describeType;
