@@ -56,7 +56,7 @@ package com.ludicast.foursquare.business
 			Alert.show("Foursquare failure:" + event);
 		}		
 		
-		private function load(endpoint:String, parseFunc:Function, failure:Function):void {
+		private function load(endpoint:String, parseFunc:Function, failure:Function = null):void {
 			failure ||= defaultFoursquareFailure;
 			var url:URLRequest = new URLRequest(authorize(API_URL + endpoint));
 			var loader:URLLoader = new URLLoader();
