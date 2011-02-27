@@ -18,13 +18,12 @@ I'm trying to take the "fat model, skinny controller" philosophy and apply it to
 * pulling out the main object from the JSON
 * determining what class should be instantiated
 
-As an example, this is how a tree of categories is pulled down:
- and wrapped up
-    public function getCategories(success:Function):void {
+As an example, this is how a tree of categories is pulled down and wrapped up
+    public function getCategories(success:Function, failure:Function = null):void {
         load("venues/categories", function(event:Event):void {
             var categories:Array = jsonResponse(event).categories;
             sendResult(success,instantiate(categories, Category));
-        });
+        }, failure);
     }
 
 This uses introspection to pull in the entire tree of categories, sub-categories and sub-sub-categories.  This in possible because the `Category` object for venues is listed as:
@@ -37,6 +36,14 @@ This uses introspection to pull in the entire tree of categories, sub-categories
 
 The `Vector.<Category>` type is what lets introspection work its magic.  As long as the JSON object has an array of the same name, its elements are used to build instances of the appropriate class.
 
+In order to use this code, you need to do nothing more than call getCategories with a callback function:
+
+    getCategories(function(event:ResultEvent):void {
+        this.categories = event.result as Array;
+    });
+    
+Each `Category` object in the array has its inner vector of subcategories automagically populated as well.  Note that you can pass in a failure callback as well.  If you don't do this, the default failure will fire, which is just a popup indicating your error.
+
 The benefits of this approach carry over to all models.  Since the `Venue` class also has a vector of `Category` objects, these get autopopulated too.
 
 ## Todo
@@ -47,7 +54,7 @@ Some of the things that should be worked on:
 * Right now I'm only throwing in the endpoints I use, but if you have your own feel free to add them.
 * Similarly the models only have the fields set that I use.  Please add any others that are useful to you, but don't remove any because they could be used for someone else's endpoint! 
 * If you have any testing strategy to add, please do.  As of now I'm planning to build an AIR app that does live integration testing with the endpoints.
-* There needs to be a smoother way to add oauth keys to the app, for both AIR and browser-based Flash applications.
+* There needs to be a smoother way to add oauth keys to the app, for both AIR and browser-based Flash applications, maybe a separate project or two is required to handle this.
 
 ## License
 
