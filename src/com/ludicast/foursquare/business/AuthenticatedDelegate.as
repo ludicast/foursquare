@@ -95,27 +95,23 @@ package com.ludicast.foursquare.business
 			}, failure);
 		}	
 		
-		private function buildVenue(venueObj:*):Venue {
-			var venue:Venue = VOInstantiator.mapToFlexObjects(venueObj, Venue) as Venue;
-			venue.currentCheckins = new Vector.<Checkin>();
-			var i:Number;
-			for (i = 0; i < venueObj.hereNow.groups.length; i++) {
-				var tmpCheckins:Array = venueObj.hereNow.groups[i].items;
-				for each (var checkin:* in tmpCheckins) {
-					venue.currentCheckins.push(
-						VOInstantiator.mapToFlexObjects(checkin, Checkin)
+		private function populateVector(arrayClass:*,obj:*, clazz:Class):* {
+			var array:* = new arrayClass(); 
+			for (var i:Number = 0; i < obj.groups.length; i++) {
+				var items:Array = obj.groups[i].items;
+				for each (var item:* in items) {
+					array.push(
+						VOInstantiator.mapToFlexObjects(item, clazz)
 					);
 				}
 			}
-			venue.venueTips = new Vector.<Tip>();
-			for (i = 0; i < venueObj.tips.groups.length; i++) {
-				var tmpTips:Array = venueObj.tips.groups[i].items;
-				for each (var tip:* in tmpTips) {
-					venue.venueTips.push(
-						VOInstantiator.mapToFlexObjects(tip, Tip)
-					);
-				}
-			}			
+			return array;
+		}
+		
+		private function buildVenue(venueObj:*):Venue {
+			var venue:Venue = VOInstantiator.mapToFlexObjects(venueObj, Venue) as Venue;
+			venue.currentCheckins = populateVector(Vector.<Checkin>, venueObj.hereNow, Checkin);
+			venue.venueTips = populateVector(Vector.<Tip>, venueObj.tips, Tip);
 			return venue;
 		}
 		
