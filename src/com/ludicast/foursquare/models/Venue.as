@@ -9,5 +9,6 @@ package com.ludicast.foursquare.models
 		public var contact:Contact;
 		public var location:Location;
 		public var mayor:Mayor;
+		public var stats:Stats;
 	}
 }
