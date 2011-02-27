@@ -98,7 +98,8 @@ package com.ludicast.foursquare.business
 		private function buildVenue(venueObj:*):Venue {
 			var venue:Venue = VOInstantiator.mapToFlexObjects(venueObj, Venue) as Venue;
 			venue.currentCheckins = new Vector.<Checkin>();
-			for (var i:Number = 0; i < venueObj.hereNow.groups.length; i++) {
+			var i:Number;
+			for (i = 0; i < venueObj.hereNow.groups.length; i++) {
 				var tmpCheckins:Array = venueObj.hereNow.groups[i].items;
 				for each (var checkin:* in tmpCheckins) {
 					venue.currentCheckins.push(
@@ -106,6 +107,15 @@ package com.ludicast.foursquare.business
 					);
 				}
 			}
+			venue.venueTips = new Vector.<Tip>();
+			for (i = 0; i < venueObj.tips.groups.length; i++) {
+				var tmpTips:Array = venueObj.tips.groups[i].items;
+				for each (var tip:* in tmpTips) {
+					venue.venueTips.push(
+						VOInstantiator.mapToFlexObjects(tip, Tip)
+					);
+				}
+			}			
 			return venue;
 		}
 		

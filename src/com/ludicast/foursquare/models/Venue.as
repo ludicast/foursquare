@@ -4,6 +4,7 @@ package com.ludicast.foursquare.models
 		public var id:String;
 		public var name:String;
 		public var currentCheckins:Vector.<Checkin>;
+		public var venueTips:Vector.<Tip>;
 		public var categories:Vector.<Category>;
 		public var verified:Boolean;	
 		public var contact:Contact;
