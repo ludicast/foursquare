@@ -2,7 +2,7 @@ package com.ludicast.foursquare.business
 {
 	import com.adobe.serialization.json.JSON;
 	import com.ludicast.foursquare.models.*;
-	import com.org.benrimbey.factory.VOInstantiator;
+	import org.benrimbey.factory.VOInstantiator;
 	
 	import flash.events.Event;
 	import flash.net.URLLoader;
