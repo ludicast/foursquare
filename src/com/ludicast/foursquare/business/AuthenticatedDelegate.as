@@ -21,14 +21,18 @@ package com.ludicast.foursquare.business
 			this.accessKey = accessKey;
 		}
 		
-		protected function getAuthInfo():String {
-			return "?oauth_token=" + accessKey;
+		protected function authorize(url:String):String {
+			trace ("authing");
+			var joinToken:String = "?";
+			if (url.indexOf("?") != -1) {
+				trace ("got  t tt token");
+				joinToken = "&";
+			}
+			
+			
+			return url + joinToken + "oauth_token=" + accessKey;
  		}
 		
-		private function randomizer():String {
-			return "&randomizer=" + Math.random() * 8000;
-		}
-
 		private function instantiate(array:Array, objClass:Class):Array {
 			var result:Array = [];
 			for each (var obj:* in array) {
@@ -45,7 +49,8 @@ package com.ludicast.foursquare.business
 		}
 		
 		private function load(endpoint:String, parseFunc:Function):void {
-			var url:URLRequest = new URLRequest( API_URL + endpoint + getAuthInfo());
+			trace("loading");
+			var url:URLRequest = new URLRequest(authorize(API_URL + endpoint));
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, parseFunc);
 			loader.load(url);
@@ -59,7 +64,21 @@ package com.ludicast.foursquare.business
 		private function jsonResponse(event:Event):* {
 			return JSON.decode(event.target.data, false).response;
 		}
-
+		
+		public function getVenues(lat:Number, lng:Number, success:Function):void {
+			load("venues/search?ll=" + lat + "," + lng, function(event:Event):void {
+				var venues:Array = [];
+				var groups:Array = jsonResponse(event).groups;
+				for each (var group:* in groups) {
+					for each (var venue:* in group.items) {
+						venues.push(
+							VOInstantiator.mapToFlexObjects(venue, Venue)						
+						);
+					}
+				}
+				sendResult(success,venues);
+			});		
+		}
 		
 		public function getVenueInfo(venueId:String, success:Function):void {
 			load("venues/" + venueId, function(event:Event):void {
