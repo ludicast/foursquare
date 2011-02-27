@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexLibProperties includeAllClasses="true" version="3">
-  <includeClasses/>
+  <includeClasses>
+    <classEntry path="com.ludicast.foursquare.models.Contact"/>
+    <classEntry path="com.ludicast.foursquare.models.Location"/>
+    <classEntry path="com.ludicast.foursquare.models.Mayor"/>
+  </includeClasses>
   <includeResources/>
   <namespaceManifests/>
 </flexLibProperties>
