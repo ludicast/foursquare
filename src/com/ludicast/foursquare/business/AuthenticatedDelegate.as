@@ -2,14 +2,19 @@ package com.ludicast.foursquare.business
 {
 	import com.adobe.serialization.json.JSON;
 	import com.ludicast.foursquare.models.*;
-	import org.benrimbey.factory.VOInstantiator;
 	
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.profiler.showRedrawRegions;
 	
+	import mx.controls.Alert;
 	import mx.rpc.IResponder;
 	import mx.rpc.events.ResultEvent;
+	
+	import org.benrimbey.factory.VOInstantiator;
 	
 	public class AuthenticatedDelegate {
 				
@@ -22,7 +27,6 @@ package com.ludicast.foursquare.business
 		}
 		
 		protected function authorize(url:String):String {
-			trace ("authing");
 			var joinToken:String = "?";
 			if (url.indexOf("?") != -1) {
 				trace ("got  t tt token");
@@ -41,18 +45,24 @@ package com.ludicast.foursquare.business
 			return result;
 		}
 		
-		public function getCategories(success:Function):void {
+		public function getCategories(success:Function, failure:Function = null):void {
 			load("venues/categories", function(event:Event):void {
 				var categories:Array = jsonResponse(event).categories;
 				sendResult(success,instantiate(categories, Category));
-			});			
+			}, failure);			
 		}
+
+		private function defaultFoursquareFailure(event:Event):void {
+			Alert.show("Foursquare failure:" + event);
+		}		
 		
-		private function load(endpoint:String, parseFunc:Function):void {
-			trace("loading");
+		private function load(endpoint:String, parseFunc:Function, failure:Function):void {
+			failure ||= defaultFoursquareFailure;
 			var url:URLRequest = new URLRequest(authorize(API_URL + endpoint));
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, parseFunc);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, failure);
+			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, failure);
 			loader.load(url);
 		}
 		
@@ -65,7 +75,7 @@ package com.ludicast.foursquare.business
 			return JSON.decode(event.target.data, false).response;
 		}
 		
-		public function getVenues(lat:Number, lng:Number, success:Function):void {
+		public function getVenues(lat:Number, lng:Number, success:Function, failure:Function = null):void {
 			load("venues/search?ll=" + lat + "," + lng, function(event:Event):void {
 				var venues:Array = [];
 				var groups:Array = jsonResponse(event).groups;
@@ -77,15 +87,15 @@ package com.ludicast.foursquare.business
 					}
 				}
 				sendResult(success,venues);
-			});		
+			}, failure);		
 		}
 		
-		public function getVenueInfo(venueId:String, success:Function):void {
+		public function getVenueInfo(venueId:String, success:Function, failure:Function = null):void {
 			load("venues/" + venueId, function(event:Event):void {
 				var venueObj:* = jsonResponse(event).venue;
 				var venue:Venue = buildVenue(venueObj); 
 				sendResult(success,venue);
-			});
+			}, failure);
 		}	
 		
 		private function buildVenue(venueObj:*):Venue {
@@ -101,5 +111,6 @@ package com.ludicast.foursquare.business
 			}
 			return venue;
 		}
+		
 	}
 }
