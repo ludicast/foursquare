@@ -29,11 +29,8 @@ package com.ludicast.foursquare.business
 		protected function authorize(url:String):String {
 			var joinToken:String = "?";
 			if (url.indexOf("?") != -1) {
-				trace ("got  t tt token");
 				joinToken = "&";
 			}
-			
-			
 			return url + joinToken + "oauth_token=" + accessKey;
  		}
 		
