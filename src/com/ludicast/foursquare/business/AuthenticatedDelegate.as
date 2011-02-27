@@ -112,6 +112,7 @@ package com.ludicast.foursquare.business
 			var venue:Venue = VOInstantiator.mapToFlexObjects(venueObj, Venue) as Venue;
 			venue.currentCheckins = populateVector(Vector.<Checkin>, venueObj.hereNow, Checkin);
 			venue.venueTips = populateVector(Vector.<Tip>, venueObj.tips, Tip);
+			venue.venuePhotos = populateVector(Vector.<Photo>, venueObj.photos, Photo);
 			return venue;
 		}
 		

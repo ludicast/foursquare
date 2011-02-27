@@ -5,6 +5,7 @@
     <classEntry path="com.ludicast.foursquare.models.Location"/>
     <classEntry path="com.ludicast.foursquare.models.Mayor"/>
     <classEntry path="com.ludicast.foursquare.models.Stats"/>
+    <classEntry path="com.ludicast.foursquare.models.Photo"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
