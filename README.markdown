@@ -4,7 +4,7 @@ This library was written for [Hail To The Mayor](http://hailtothemayor.com) duri
 
 ## Requirements
 
-First of all it seems like the V2 crossdomain is less permissive than V1's, so for now this library only works with AIR apps.
+First of all it seems that this library only works with AIR apps, and SWFs that are hosted via https.
 
 Secondly, I use a library from Ben Rimbey to cast foursquare's JSON results into Actionscript objects (e.g. `Venue`).  This library was enhanced so it can receive nested objects (such as tips for a venue).  An association tree can then be automatically pulled out of the JSON objects.
 
