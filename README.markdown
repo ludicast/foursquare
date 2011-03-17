@@ -4,11 +4,13 @@ This library was written for [Hail To The Mayor](http://hailtothemayor.com) duri
 
 ## Requirements
 
-I use a library from Ben Rimbey to cast foursquare's JSON results into Actionscript objects (e.g. `Venue`).  This library was enhanced so it can receive nested objects (such as tips for a venue).  An association tree can then be automatically pulled out of the JSON objects.
+First of all it seems that this library only works with AIR apps, and SWFs that are hosted via https.
+
+Secondly, I use a library from Ben Rimbey to cast foursquare's JSON results into Actionscript objects (e.g. `Venue`).  This library was enhanced so it can receive nested objects (such as tips for a venue).  An association tree can then be automatically pulled out of the JSON objects.
 
 In enhancing it I use a class introduced in Flash 10, the `Vector`, to provide a "typed collection" for introspection purposes.   So it requires Flash 10 :).
 
-Also, you need to generate from foursquare an oauth key.  There are several ways to do this, you'll have to pick twhat works best for you..
+Finally, you need to generate from foursquare an oauth key.  There are several ways to do this, you'll have to pick what works best for you..
 
 ## The Goal
 
