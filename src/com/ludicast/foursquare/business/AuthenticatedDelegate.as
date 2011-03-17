@@ -71,9 +71,17 @@ package com.ludicast.foursquare.business
 		private function jsonResponse(event:Event):* {
 			return JSON.decode(event.target.data, false).response;
 		}
+
+		public function getVenuesForCategory(lat:Number, lng:Number, category:String, success:Function, failure:Function = null):void {
+			getGenericVenues(lat, lng, "&categoryId=" + category, success, failure)
+		}
 		
 		public function getVenues(lat:Number, lng:Number, success:Function, failure:Function = null):void {
-			load("venues/search?ll=" + lat + "," + lng, function(event:Event):void {
+			getGenericVenues(lat, lng, "", success, failure)
+		}
+		
+		protected function getGenericVenues(lat:Number, lng:Number, queryString:String,success:Function, failure:Function = null):void {
+			load("venues/search?ll=" + lat + "," + lng + queryString, function(event:Event):void {
 				var venues:Array = [];
 				var groups:Array = jsonResponse(event).groups;
 				for each (var group:* in groups) {
