@@ -18,11 +18,11 @@ package com.ludicast.foursquare.business
 	
 	import spark.primitives.Path;
 	
-	public class AuthenticatedDelegate extends AbstractFoursquareDelegate {
+	public class AuthenticatedFoursquareDelegate extends AbstractFoursquareDelegate {
 		
 		private static const API_URL:String = "https://api.foursquare.com/v2/"
 		
-		public function AuthenticatedDelegate(accessKey:String) {
+		public function AuthenticatedFoursquareDelegate(accessKey:String) {
 			this.accessKey = accessKey;
 		}
 		
