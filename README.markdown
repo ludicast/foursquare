@@ -12,6 +12,14 @@ In enhancing it I use a class introduced in Flash 10, the `Vector`, to provide a
 
 Finally, you need to generate from foursquare an oauth key.  There are several ways to do this, you'll have to pick what works best for you..
 
+## Connecting to foursquare
+
+If you have an OAuth token pass it in to the constructor of the `AuthenticatedFoursquareDelegate` class.
+
+However, if you instead want to use "userless" access (e.g. for the [Venues Project](http://developer.foursquare.com/venues/)), you would need to create a serverside proxy for your foursquare requests.  Ideally this proxy will receive a foursquare request and tack on your application's id and secret.  Then you would create an instance of the `ProxiedFoursquareDelegate`, passing in to the constructor your proxy location.
+
+Either of these delegates, once created, will supply you with methods such as `getCategories`.
+
 ## The Goal
 
 I'm trying to take the "fat model, skinny controller" philosophy and apply it to this library.  What I mean by that is I would like the classes to have intelligent enough associations that everything gets pulled in as needed.  Adding a new foursquare endpoint should only require:
