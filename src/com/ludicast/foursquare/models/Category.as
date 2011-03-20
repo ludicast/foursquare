@@ -1,5 +1,7 @@
 package com.ludicast.foursquare.models
 {
+	import mx.collections.ICollectionView;
+
 	public class Category {
 		public var id:String;
 		public var name:String;
@@ -7,7 +9,15 @@ package com.ludicast.foursquare.models
 		public var categories:Vector.<Category> = new Vector.<Category>();
 		
 		public function toString():String {
-			return "{ name: " + name + " subCategories: [" + categories + "] }"
+			return name;
+		}
+	
+		public function get subCategories():Array {
+			var catArray:Array = [];
+			for each (var cat:Category in categories) {
+				catArray.push(cat);
+			}
+			return catArray;
 		}
 	}
 }
